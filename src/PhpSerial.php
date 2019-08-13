@@ -14,6 +14,7 @@ define ("SERIAL_DEVICE_OPENED", 2);
  * @thanks Aurélien Derouineau for finding how to open serial ports with windows
  * @thanks Alec Avedisyan for help and testing with reading
  * @thanks Jim Wright for OSX cleanup/fixes.
+ * Rafal Kolano belamy@interia.pl - Update PhpSerial.php to wotk on Orange Pi Zero with Raspbian
  * @copyright under GPL 2 licence
  */
 class PhpSerial
@@ -47,7 +48,7 @@ class PhpSerial
         if (substr($sysName, 0, 5) === "Linux") {
             $this->_os = "linux";
 
-            if ($this->_exec("stty") === 0) {
+            if ($this->_exec("stty --version") === 0) {
                 register_shutdown_function(array($this, "deviceClose"));
             } else {
                 trigger_error(
@@ -90,7 +91,7 @@ class PhpSerial
                     $device = "/dev/ttyS" . ($matches[1] - 1);
                 }
 
-                if ($this->_exec("stty -F " . $device) === 0) {
+                if ($this->_exec("stty -F " . $device . " raw") === 0) {
                     $this->_device = $device;
                     $this->_dState = SERIAL_DEVICE_SET;
 
