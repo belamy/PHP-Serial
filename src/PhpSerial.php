@@ -91,7 +91,7 @@ class PhpSerial
                     $device = "/dev/ttyS" . ($matches[1] - 1);
                 }
 
-                if ($this->_exec("stty -F " . $device . " raw") === 0) {
+                if ($this->_exec("stty -F " . $device . " raw -echo") === 0) {
                     $this->_device = $device;
                     $this->_dState = SERIAL_DEVICE_SET;
 
